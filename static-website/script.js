@@ -1,12 +1,10 @@
-// Context Profiles Academy - Main JavaScript
+// Ai Lendra - Main JavaScript
 
-// IMPORTANT: Your Google Sheets ID from the URL you provided
+// Google Sheets ID from your URL
 const GOOGLE_SHEET_ID = '11kMQ3nh3P51qgp1qGMurOSzFlJh4g7X0mUCHkdgxa0g';
 
-// IMPORTANT: Replace this URL with your actual Google Apps Script deployment URL
-// After you deploy your Apps Script, it will look like this:
-// https://script.google.com/macros/s/AKfycbz...../exec
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID_HERE/exec';
+// Google Apps Script deployment URL - REPLACE WITH YOUR ACTUAL URL
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxR6rLtKP8VTH4Z9VhY8JqL2kE_NmQjQrWMDvNJ7xPWHGp8uLSkKyNv8lNhNOYXEllk/exec';
 
 // Form submission handler
 document.addEventListener('DOMContentLoaded', function() {
@@ -51,27 +49,25 @@ async function handleFormSubmission(e) {
             email: email,
             timestamp: new Date().toISOString(),
             userAgent: navigator.userAgent,
-            source: 'context-profiles-academy'
+            source: 'ai-lendra-landing'
         };
         
-        // Try to submit to Google Sheets
         let submitSuccess = false;
         
-        if (!APPS_SCRIPT_URL.includes('YOUR_DEPLOYMENT_ID_HERE')) {
-            try {
-                await submitToGoogleSheets(formData);
-                submitSuccess = true;
-                console.log('Data submitted to Google Sheets successfully');
-            } catch (error) {
-                console.error('Google Sheets submission failed:', error);
-            }
+        // Try submitting to Google Sheets via Apps Script
+        try {
+            await submitToGoogleSheets(formData);
+            submitSuccess = true;
+            console.log('✅ Data submitted to Google Sheets successfully');
+        } catch (error) {
+            console.error('❌ Google Sheets submission failed:', error);
         }
         
         // Always store locally as backup
         storeDataLocally(formData);
         
         // Store user data for session
-        localStorage.setItem('cpAcademyUser', JSON.stringify({
+        localStorage.setItem('aiLendraUser', JSON.stringify({
             name: name,
             email: email,
             accessTime: new Date().toISOString()
@@ -79,18 +75,18 @@ async function handleFormSubmission(e) {
         
         // Show success message
         if (submitSuccess) {
-            showMessage('¡Excelente! Datos guardados. Redirigiendo al hub de módulos...', 'success');
+            showMessage('¡Excelente! Datos guardados en Google Sheets. Redirigiendo al hub...', 'success');
         } else {
             showMessage('¡Perfecto! Accediendo al contenido (datos guardados localmente)...', 'success');
         }
         
-        // Redirect to hub after a short delay
+        // Redirect to hub after delay
         setTimeout(() => {
             window.location.href = 'hub.html';
         }, 2000);
         
     } catch (error) {
-        console.error('Error submitting form:', error);
+        console.error('Error in form submission:', error);
         
         // Store locally as fallback
         storeDataLocally(formData);
@@ -98,7 +94,7 @@ async function handleFormSubmission(e) {
         // Still allow access
         showMessage('Accediendo al contenido (datos guardados localmente)...', 'success');
         
-        localStorage.setItem('cpAcademyUser', JSON.stringify({
+        localStorage.setItem('aiLendraUser', JSON.stringify({
             name: name,
             email: email,
             accessTime: new Date().toISOString()
@@ -118,7 +114,9 @@ async function handleFormSubmission(e) {
 
 async function submitToGoogleSheets(data) {
     try {
-        // Method 1: Direct fetch to Apps Script
+        console.log('📤 Submitting to Google Sheets:', data);
+        
+        // Method 1: Try direct POST request
         const response = await fetch(APPS_SCRIPT_URL, {
             method: 'POST',
             headers: {
@@ -128,14 +126,12 @@ async function submitToGoogleSheets(data) {
             mode: 'no-cors' // Required for Apps Script CORS
         });
         
-        // Note: With no-cors mode, we can't read the response status
-        // But if no error is thrown, the request was sent successfully
-        console.log('Request sent to Google Apps Script');
+        console.log('✅ Request sent to Google Apps Script');
         
     } catch (error) {
-        console.error('Apps Script submission error:', error);
+        console.error('❌ Direct submission failed:', error);
         
-        // Method 2: Fallback using form submission (opens in new window briefly)
+        // Method 2: Try form submission fallback
         try {
             const form = document.createElement('form');
             form.method = 'POST';
@@ -143,7 +139,7 @@ async function submitToGoogleSheets(data) {
             form.target = '_blank';
             form.style.display = 'none';
             
-            // Add form data
+            // Add form data as hidden inputs
             Object.keys(data).forEach(key => {
                 const input = document.createElement('input');
                 input.type = 'hidden';
@@ -156,14 +152,18 @@ async function submitToGoogleSheets(data) {
             form.submit();
             document.body.removeChild(form);
             
-            // Close the popup window after a brief delay
+            console.log('✅ Fallback form submission completed');
+            
+            // Close popup after brief delay
             setTimeout(() => {
                 const popups = window.open('', '_blank');
-                if (popups) popups.close();
+                if (popups && !popups.closed) {
+                    popups.close();
+                }
             }, 1000);
             
         } catch (fallbackError) {
-            console.error('Fallback submission also failed:', fallbackError);
+            console.error('❌ Fallback submission also failed:', fallbackError);
             throw error; // Re-throw original error
         }
     }
@@ -172,7 +172,7 @@ async function submitToGoogleSheets(data) {
 function storeDataLocally(data) {
     try {
         // Get existing leads from localStorage
-        let leads = JSON.parse(localStorage.getItem('cpAcademyLeads') || '[]');
+        let leads = JSON.parse(localStorage.getItem('aiLendraLeads') || '[]');
         
         // Check if email already exists
         const existingLead = leads.find(lead => lead.email === data.email);
@@ -181,15 +181,15 @@ function storeDataLocally(data) {
             leads.push(data);
             
             // Store back to localStorage
-            localStorage.setItem('cpAcademyLeads', JSON.stringify(leads));
+            localStorage.setItem('aiLendraLeads', JSON.stringify(leads));
             
-            console.log('Data stored locally:', data);
+            console.log('💾 Data stored locally:', data);
         } else {
-            console.log('Email already exists in local storage');
+            console.log('ℹ️ Email already exists in local storage');
         }
         
     } catch (error) {
-        console.error('Error storing data locally:', error);
+        console.error('❌ Error storing data locally:', error);
     }
 }
 
@@ -223,7 +223,7 @@ function isValidEmail(email) {
 
 // Function to export leads data (for manual export)
 function exportLeads() {
-    const leads = JSON.parse(localStorage.getItem('cpAcademyLeads') || '[]');
+    const leads = JSON.parse(localStorage.getItem('aiLendraLeads') || '[]');
     
     if (leads.length === 0) {
         alert('No hay datos para exportar');
@@ -248,42 +248,19 @@ function exportLeads() {
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    link.setAttribute('download', `context-profiles-leads-${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `ai-lendra-leads-${new Date().toISOString().split('T')[0]}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     
-    console.log(`Exported ${leads.length} leads to CSV`);
+    console.log(`📊 Exported ${leads.length} leads to CSV`);
 }
 
 // Add smooth scrolling and animations
 document.addEventListener('DOMContentLoaded', function() {
     // Add smooth scrolling
     document.documentElement.style.scrollBehavior = 'smooth';
-    
-    // Add animation observers for elements coming into view
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-    
-    // Observe all elements with animation class
-    document.querySelectorAll('.animate-on-scroll').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
     
     // Add form validation improvements
     const nameInput = document.getElementById('name');
@@ -301,14 +278,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.style.borderColor = '#ef4444';
                 this.style.backgroundColor = '#fef2f2';
             } else {
-                this.style.borderColor = '#d1d5db';
+                this.style.borderColor = '#06b6d4';
                 this.style.backgroundColor = '#ffffff';
             }
         });
     }
 });
 
-// Add keyboard shortcuts
+// Add keyboard shortcuts for debugging
 document.addEventListener('keydown', function(e) {
     // Alt + E to export leads (for debugging/admin)
     if (e.altKey && e.key === 'e') {
@@ -320,44 +297,68 @@ document.addEventListener('keydown', function(e) {
     if (e.altKey && e.key === 'c') {
         e.preventDefault();
         if (confirm('¿Estás seguro de que quieres borrar todos los datos locales?')) {
-            localStorage.removeItem('cpAcademyLeads');
-            localStorage.removeItem('cpAcademyUser');
-            console.log('All local data cleared');
+            localStorage.removeItem('aiLendraLeads');
+            localStorage.removeItem('aiLendraUser');
+            console.log('🗑️ All local data cleared');
         }
+    }
+    
+    // Alt + T to test submission (for debugging)
+    if (e.altKey && e.key === 't') {
+        e.preventDefault();
+        testSubmission();
     }
 });
 
+// Test submission function
+function testSubmission() {
+    const testData = {
+        name: 'Test User ' + Date.now(),
+        email: `test${Date.now()}@example.com`,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        source: 'test-submission'
+    };
+    
+    console.log('🧪 Testing submission with data:', testData);
+    
+    submitToGoogleSheets(testData)
+        .then(() => console.log('✅ Test submission completed'))
+        .catch(error => console.error('❌ Test submission failed:', error));
+    
+    storeDataLocally(testData);
+}
+
 // Console helper functions for debugging
 if (typeof window !== 'undefined') {
-    window.cpAcademy = {
+    window.aiLendra = {
         exportLeads: exportLeads,
-        getLeads: () => JSON.parse(localStorage.getItem('cpAcademyLeads') || '[]'),
+        getLeads: () => JSON.parse(localStorage.getItem('aiLendraLeads') || '[]'),
         clearLeads: () => {
-            localStorage.removeItem('cpAcademyLeads');
-            console.log('All leads cleared');
+            localStorage.removeItem('aiLendraLeads');
+            console.log('🗑️ All leads cleared');
         },
-        getUser: () => JSON.parse(localStorage.getItem('cpAcademyUser') || 'null'),
+        getUser: () => JSON.parse(localStorage.getItem('aiLendraUser') || 'null'),
         clearUser: () => {
-            localStorage.removeItem('cpAcademyUser');
-            console.log('User session cleared');
+            localStorage.removeItem('aiLendraUser');
+            console.log('🗑️ User session cleared');
         },
-        testSubmission: (name, email) => {
-            const testData = {
-                name: name || 'Test User',
-                email: email || 'test@example.com',
-                timestamp: new Date().toISOString(),
-                userAgent: navigator.userAgent,
-                source: 'test'
-            };
-            storeDataLocally(testData);
-            console.log('Test submission completed:', testData);
+        testSubmission: testSubmission,
+        showStats: () => {
+            const leads = JSON.parse(localStorage.getItem('aiLendraLeads') || '[]');
+            console.log(`📊 Total leads: ${leads.length}`);
+            console.log('📋 Recent leads:', leads.slice(-5));
+            return leads;
         }
     };
     
-    console.log('%cContext Profiles Academy loaded successfully!', 'color: #3b82f6; font-weight: bold;');
-    console.log('Available commands:');
-    console.log('- cpAcademy.exportLeads() - Export leads to CSV');
-    console.log('- cpAcademy.getLeads() - View all stored leads');
-    console.log('- cpAcademy.clearLeads() - Clear all leads');
-    console.log('- cpAcademy.testSubmission() - Test form submission');
+    console.log('%c🚀 Ai Lendra loaded successfully!', 'color: #06b6d4; font-weight: bold; font-size: 16px;');
+    console.log('Available debugging commands:');
+    console.log('- aiLendra.exportLeads() - Export leads to CSV');
+    console.log('- aiLendra.getLeads() - View all stored leads');
+    console.log('- aiLendra.showStats() - Show statistics');
+    console.log('- aiLendra.testSubmission() - Test Google Sheets integration');
+    console.log('- Alt+E - Export leads');
+    console.log('- Alt+C - Clear all data');
+    console.log('- Alt+T - Test submission');
 }
