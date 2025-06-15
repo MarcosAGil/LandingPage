@@ -14,32 +14,32 @@
 <body class="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 min-h-screen">
     <!-- Header -->
     <header class="bg-white bg-opacity-10 backdrop-blur-sm border-b border-white border-opacity-20 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="max-w-7xl mx-auto px-4 py-3 sm:py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <button onclick="goBack()" class="text-white hover:text-blue-300 mr-4">
-                        <i class="fas fa-arrow-left text-xl"></i>
+                    <button onclick="goBack()" class="text-white hover:text-blue-300 mr-3 sm:mr-4 p-2 sm:p-1">
+                        <i class="fas fa-arrow-left text-lg sm:text-xl"></i>
                     </button>
                     <div class="flex items-center">
-                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mr-3">
-                            <i class="fas fa-brain text-white"></i>
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mr-2 sm:mr-3">
+                            <i class="fas fa-brain text-white text-sm sm:text-base"></i>
                         </div>
                         <div>
-                            <h1 class="text-xl font-bold text-white">Context Profiles</h1>
-                            <p class="text-blue-200 text-sm">La Revolución del Prompting</p>
+                            <h1 class="text-lg sm:text-xl font-bold text-white">Context Profiles</h1>
+                            <p class="text-blue-200 text-xs sm:text-sm hidden sm:block">La Revolución del Prompting</p>
                         </div>
                     </div>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <div class="text-blue-200 text-sm">
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <div class="text-blue-200 text-xs sm:text-sm">
                         <span id="currentSlide">1</span> / <span id="totalSlides">15</span>
                     </div>
-                    <div class="flex space-x-2">
-                        <button id="prevBtn" onclick="previousSlide()" class="w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center text-white transition-all">
-                            <i class="fas fa-chevron-left"></i>
+                    <div class="flex space-x-1 sm:space-x-2">
+                        <button id="prevBtn" onclick="previousSlide()" class="w-8 h-8 sm:w-10 sm:h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center text-white transition-all">
+                            <i class="fas fa-chevron-left text-xs sm:text-sm"></i>
                         </button>
-                        <button id="nextBtn" onclick="nextSlide()" class="w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center text-white transition-all">
-                            <i class="fas fa-chevron-right"></i>
+                        <button id="nextBtn" onclick="nextSlide()" class="w-8 h-8 sm:w-10 sm:h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center text-white transition-all">
+                            <i class="fas fa-chevron-right text-xs sm:text-sm"></i>
                         </button>
                     </div>
                 </div>
@@ -47,29 +47,54 @@
         </div>
     </header>
 
+    <!-- Telegram CTA Banner (Mobile) -->
+    <div class="sm:hidden bg-gradient-to-r from-cyan-600 to-blue-600 p-4 text-center">
+        <a href="https://t.me/ai_lendra" target="_blank" class="flex items-center justify-center text-white text-sm">
+            <i class="fab fa-telegram-plane mr-2"></i>
+            ¿Te gusta? ¡Únete a nuestra comunidad de +1,200 expertos!
+        </a>
+    </div>
+
     <!-- Slide Container -->
-    <main class="py-8">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="bg-white bg-opacity-95 rounded-2xl shadow-2xl overflow-hidden">
-                <div id="slideContainer" class="w-full" style="height: 800px;">
+    <main class="py-4 sm:py-8">
+        <div class="max-w-7xl mx-auto px-2 sm:px-4">
+            <div class="bg-white bg-opacity-95 rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden">
+                <div id="slideContainer" class="w-full" style="height: 500px; min-height: 500px;">
                     <!-- Slide content will be dynamically loaded here -->
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Navigation Footer -->
-    <footer class="bg-white bg-opacity-10 backdrop-blur-sm border-t border-white border-opacity-20 py-6">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex items-center justify-between">
-                <div class="text-blue-200">
-                    <p class="text-sm">Marcos A. Gil - Aliendra</p>
+    <!-- Telegram CTA Banner (Desktop) -->
+    <div class="hidden sm:block bg-gradient-to-r from-cyan-600 to-blue-600 mx-4 rounded-xl p-6 mb-6">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center">
+                <i class="fab fa-telegram-plane text-3xl text-white mr-4"></i>
+                <div>
+                    <h3 class="text-lg font-bold text-white">¿Te está gustando el contenido?</h3>
+                    <p class="text-cyan-100 text-sm">Únete a nuestra comunidad de +1,200 expertos en IA</p>
                 </div>
-                <div class="flex space-x-4">
-                    <button onclick="previousSlide()" class="px-6 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg text-white font-semibold transition-all">
+            </div>
+            <a href="https://t.me/ai_lendra" target="_blank" class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105">
+                <i class="fab fa-telegram-plane mr-2"></i>
+                Unirse a Telegram
+            </a>
+        </div>
+    </div>
+
+    <!-- Navigation Footer -->
+    <footer class="bg-white bg-opacity-10 backdrop-blur-sm border-t border-white border-opacity-20 py-4 sm:py-6">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-blue-200 text-center sm:text-left">
+                    <p class="text-xs sm:text-sm">Marcos A. Gil - Aliendra</p>
+                </div>
+                <div class="flex space-x-2 sm:space-x-4 w-full sm:w-auto">
+                    <button onclick="previousSlide()" class="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg text-white font-semibold transition-all text-sm sm:text-base">
                         <i class="fas fa-chevron-left mr-2"></i>Anterior
                     </button>
-                    <button onclick="nextSlide()" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg text-white font-semibold transition-all">
+                    <button onclick="nextSlide()" class="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg text-white font-semibold transition-all text-sm sm:text-base">
                         Siguiente<i class="fas fa-chevron-right ml-2"></i>
                     </button>
                 </div>
@@ -92,17 +117,17 @@
 
         const slides = [
             // Slide 1 - Title
-            `<div class="slide-container flex flex-col justify-center items-center h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white">
-                <div class="text-center max-w-4xl px-8">
-                    <h1 class="text-6xl md:text-7xl font-black mb-6">Context Profiles</h1>
-                    <div class="flex items-center justify-center mb-6">
-                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
-                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
-                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+            `<div class="slide-container flex flex-col justify-center items-center h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white p-4 sm:p-8">
+                <div class="text-center max-w-4xl">
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black mb-4 sm:mb-6">Context Profiles</h1>
+                    <div class="flex items-center justify-center mb-4 sm:mb-6">
+                        <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
+                        <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
+                        <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
                     </div>
-                    <h2 class="text-4xl text-blue-100 mb-8">La Revolución del Prompting</h2>
-                    <div class="bg-blue-900 bg-opacity-50 rounded-xl p-6 mb-8">
-                        <pre class="text-left text-lg text-blue-100"><code>{
+                    <h2 class="text-2xl sm:text-4xl text-blue-100 mb-6 sm:mb-8">La Revolución del Prompting</h2>
+                    <div class="bg-blue-900 bg-opacity-50 rounded-xl p-3 sm:p-6 mb-6 sm:mb-8">
+                        <pre class="text-left text-sm sm:text-lg text-blue-100 overflow-auto"><code>{
   "profile_type": "business",
   "core_context": {
     "primary_identity": "...",
@@ -114,266 +139,237 @@
   <span class="text-white font-bold">...</span>
 }</code></pre>
                     </div>
-                    <p class="text-xl leading-relaxed mb-8">
+                    <p class="text-base sm:text-xl leading-relaxed mb-6 sm:mb-8">
                         "La técnica que ha revolucionado cómo interactuamos con la IA, 
                         <span class="font-semibold">multiplicando exponencialmente</span> 
                         la calidad y precisión de las respuestas de los LLMs."
                     </p>
                     <div class="text-right">
-                        <p class="text-xl font-semibold">Marcos A. Gil</p>
-                        <p class="text-lg opacity-80">Aliendra</p>
+                        <p class="text-lg sm:text-xl font-semibold">Marcos A. Gil</p>
+                        <p class="text-sm sm:text-lg opacity-80">Aliendra</p>
                     </div>
                 </div>
             </div>`,
 
             // Slide 2 - El Problema
-            `<div class="slide-container h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white p-8">
-                <div class="max-w-6xl mx-auto">
-                    <div class="text-center mb-8">
-                        <h1 class="text-5xl font-black mb-4">El Problema del Prompting Tradicional</h1>
-                        <div class="flex items-center justify-center mb-4">
-                            <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
-                            <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
-                            <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+            `<div class="slide-container h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white p-4 sm:p-8">
+                <div class="max-w-6xl mx-auto h-full flex flex-col justify-center">
+                    <div class="text-center mb-6 sm:mb-8">
+                        <h1 class="text-3xl sm:text-5xl font-black mb-3 sm:mb-4">El Problema del Prompting Tradicional</h1>
+                        <div class="flex items-center justify-center mb-3 sm:mb-4">
+                            <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
+                            <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
+                            <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
                         </div>
-                        <h2 class="text-2xl text-blue-100">¿Por qué necesitamos Context Profiles?</h2>
+                        <h2 class="text-lg sm:text-2xl text-blue-100">¿Por qué necesitamos Context Profiles?</h2>
                     </div>
                     
-                    <div class="grid md:grid-cols-2 gap-8 mb-8">
-                        <div class="bg-red-900 bg-opacity-30 p-6 rounded-xl border border-red-500">
-                            <h3 class="text-xl font-bold mb-4 text-red-200">Prompting Tradicional</h3>
-                            <div class="space-y-3">
+                    <div class="grid md:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8">
+                        <div class="bg-red-900 bg-opacity-30 p-4 sm:p-6 rounded-xl border border-red-500">
+                            <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-red-200">Prompting Tradicional</h3>
+                            <div class="space-y-2 sm:space-y-3">
                                 <div class="flex items-start">
-                                    <i class="fas fa-times-circle text-red-300 mt-1 mr-3"></i>
-                                    <p>Instrucciones repetitivas y largas en cada prompt</p>
+                                    <i class="fas fa-times-circle text-red-300 mt-1 mr-2 sm:mr-3 flex-shrink-0"></i>
+                                    <p class="text-sm sm:text-base">Instrucciones repetitivas y largas en cada prompt</p>
                                 </div>
                                 <div class="flex items-start">
-                                    <i class="fas fa-times-circle text-red-300 mt-1 mr-3"></i>
-                                    <p>Contexto fragmentado y desconectado</p>
+                                    <i class="fas fa-times-circle text-red-300 mt-1 mr-2 sm:mr-3 flex-shrink-0"></i>
+                                    <p class="text-sm sm:text-base">Contexto fragmentado y desconectado</p>
                                 </div>
                                 <div class="flex items-start">
-                                    <i class="fas fa-times-circle text-red-300 mt-1 mr-3"></i>
-                                    <p>Incapacidad para mantener consistencia entre sesiones</p>
-                                </div>
-                                <div class="flex items-start">
-                                    <i class="fas fa-times-circle text-red-300 mt-1 mr-3"></i>
-                                    <p>Desperdicio de tokens en repetir información básica</p>
+                                    <i class="fas fa-times-circle text-red-300 mt-1 mr-2 sm:mr-3 flex-shrink-0"></i>
+                                    <p class="text-sm sm:text-base">Incapacidad para mantener consistencia entre sesiones</p>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="bg-green-900 bg-opacity-30 p-6 rounded-xl border border-green-500">
-                            <h3 class="text-xl font-bold mb-4 text-green-200">Con Context Profiles</h3>
-                            <div class="space-y-3">
+                        <div class="bg-green-900 bg-opacity-30 p-4 sm:p-6 rounded-xl border border-green-500">
+                            <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-green-200">Con Context Profiles</h3>
+                            <div class="space-y-2 sm:space-y-3">
                                 <div class="flex items-start">
-                                    <i class="fas fa-check-circle text-green-300 mt-1 mr-3"></i>
-                                    <p>Contexto estructurado y reutilizable</p>
+                                    <i class="fas fa-check-circle text-green-300 mt-1 mr-2 sm:mr-3 flex-shrink-0"></i>
+                                    <p class="text-sm sm:text-base">Contexto estructurado y reutilizable</p>
                                 </div>
                                 <div class="flex items-start">
-                                    <i class="fas fa-check-circle text-green-300 mt-1 mr-3"></i>
-                                    <p>Consistencia absoluta en todas las interacciones</p>
+                                    <i class="fas fa-check-circle text-green-300 mt-1 mr-2 sm:mr-3 flex-shrink-0"></i>
+                                    <p class="text-sm sm:text-base">Consistencia absoluta en todas las interacciones</p>
                                 </div>
                                 <div class="flex items-start">
-                                    <i class="fas fa-check-circle text-green-300 mt-1 mr-3"></i>
-                                    <p>Máxima información en mínimo espacio</p>
-                                </div>
-                                <div class="flex items-start">
-                                    <i class="fas fa-check-circle text-green-300 mt-1 mr-3"></i>
-                                    <p>Comunicación precisa con el modelo</p>
+                                    <i class="fas fa-check-circle text-green-300 mt-1 mr-2 sm:mr-3 flex-shrink-0"></i>
+                                    <p class="text-sm sm:text-base">Máxima información en mínimo espacio</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="text-center">
-                        <p class="text-xl leading-relaxed mb-4">
+                        <p class="text-base sm:text-xl leading-relaxed mb-3 sm:mb-4">
                             "El 90% de los desarrolladores construyen aplicaciones de IA sobre suposiciones erróneas sobre cómo 
                             <span class="font-semibold">funcionan realmente las ventanas de contexto</span> en los LLMs modernos."
                         </p>
-                        <p class="text-lg leading-relaxed">
-                            Los Context Profiles solucionan este problema fundamental, permitiéndonos comunicarnos 
-                            con los modelos de forma estructurada, consistente y eficiente.
+                        <p class="text-sm sm:text-lg leading-relaxed">
+                            Los Context Profiles solucionan este problema fundamental.
                         </p>
                     </div>
                 </div>
             </div>`,
 
-            // Continue with more slides...
-            `<div class="slide-container h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white p-8">
-                <div class="max-w-6xl mx-auto">
-                    <div class="text-center mb-6">
-                        <h1 class="text-5xl font-black mb-4">¿Qué son los Context Profiles?</h1>
-                        <div class="flex items-center justify-center mb-4">
-                            <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
-                            <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
-                            <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+            // Slide 3 - ¿Qué son?
+            `<div class="slide-container h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white p-4 sm:p-8">
+                <div class="max-w-6xl mx-auto h-full flex flex-col justify-center">
+                    <div class="text-center mb-4 sm:mb-6">
+                        <h1 class="text-3xl sm:text-5xl font-black mb-3 sm:mb-4">¿Qué son los Context Profiles?</h1>
+                        <div class="flex items-center justify-center mb-3 sm:mb-4">
+                            <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
+                            <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
+                            <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
                         </div>
-                        <h2 class="text-2xl text-blue-100">Anatomía y Componentes Esenciales</h2>
+                        <h2 class="text-lg sm:text-2xl text-blue-100">Anatomía y Componentes Esenciales</h2>
                     </div>
                     
-                    <div class="bg-blue-900 bg-opacity-40 p-6 rounded-xl mb-6 text-center">
-                        <p class="text-xl">
+                    <div class="bg-blue-900 bg-opacity-40 p-4 sm:p-6 rounded-xl mb-4 sm:mb-6 text-center">
+                        <p class="text-sm sm:text-xl">
                             Un <span class="bg-yellow-400 text-black px-2 py-1 rounded">Context Profile</span> es una estructura de datos en formato JSON 
-                            que encapsula información contextual específica sobre personas, negocios, procesos o entidades, 
-                            permitiendo que los LLMs "entiendan" el contexto de manera precisa y consistente.
+                            que encapsula información contextual específica, permitiendo que los LLMs "entiendan" el contexto de manera precisa.
                         </p>
                     </div>
                     
-                    <div class="grid md:grid-cols-2 gap-8">
+                    <div class="grid md:grid-cols-2 gap-4 sm:gap-8">
                         <div>
-                            <h3 class="text-xl font-bold mb-4 text-blue-200">Componentes Esenciales</h3>
-                            <div class="space-y-3">
-                                <div class="bg-white bg-opacity-10 p-3 rounded-lg">
-                                    <h4 class="font-bold text-blue-200">1. Metadatos del Profile</h4>
-                                    <p class="text-sm">Define el tipo de perfil y su identificador único</p>
+                            <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-blue-200">Componentes Esenciales</h3>
+                            <div class="space-y-2 sm:space-y-3">
+                                <div class="bg-white bg-opacity-10 p-2 sm:p-3 rounded-lg">
+                                    <h4 class="font-bold text-blue-200 text-sm sm:text-base">1. Metadatos del Profile</h4>
+                                    <p class="text-xs sm:text-sm">Define el tipo de perfil y su identificador único</p>
                                 </div>
-                                <div class="bg-white bg-opacity-10 p-3 rounded-lg">
-                                    <h4 class="font-bold text-blue-200">2. Contexto Central</h4>
-                                    <p class="text-sm">Identidad primaria y atributos clave</p>
+                                <div class="bg-white bg-opacity-10 p-2 sm:p-3 rounded-lg">
+                                    <h4 class="font-bold text-blue-200 text-sm sm:text-base">2. Contexto Central</h4>
+                                    <p class="text-xs sm:text-sm">Identidad primaria y atributos clave</p>
                                 </div>
-                                <div class="bg-white bg-opacity-10 p-3 rounded-lg">
-                                    <h4 class="font-bold text-blue-200">3. Patrones de Comportamiento</h4>
-                                    <p class="text-sm">Estilo de comunicación, preferencias y restricciones</p>
+                                <div class="bg-white bg-opacity-10 p-2 sm:p-3 rounded-lg">
+                                    <h4 class="font-bold text-blue-200 text-sm sm:text-base">3. Patrones de Comportamiento</h4>
+                                    <p class="text-xs sm:text-sm">Estilo de comunicación y preferencias</p>
                                 </div>
                             </div>
                         </div>
                         
                         <div>
-                            <h3 class="text-xl font-bold mb-4 text-blue-200">Estructura Básica (JSON)</h3>
-                            <div class="bg-gray-900 p-4 rounded-lg text-sm">
+                            <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-blue-200">Estructura Básica (JSON)</h3>
+                            <div class="bg-gray-900 p-3 sm:p-4 rounded-lg text-xs sm:text-sm overflow-auto">
                                 <pre><code>{
-  "profile_type": "personal|business|process",
-  "profile_id": "unique_identifier",
+  "profile_type": "personal|business",
   "core_context": {
-    "primary_identity": "descripción concisa",
-    "key_attributes": ["atributo1", "atributo2"],
-    "context_depth": "basic|intermediate|advanced"
+    "primary_identity": "descripción",
+    "key_attributes": ["attr1", "attr2"]
   },
   "behavioral_patterns": {
-    "communication_style": "descripción del estilo",
-    "preferences": ["preferencia1", "preferencia2"],
-    "constraints": ["limitación1", "limitación2"]
+    "communication_style": "estilo",
+    "preferences": ["pref1", "pref2"]
   },
   "interaction_guidelines": {
-    "tone": "profesional|casual|técnico",
-    "depth_preference": "high-level|detailed"
+    "tone": "profesional|casual",
+    "depth_preference": "detailed"
   }
 }</code></pre>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="text-center mt-6">
-                        <p class="text-lg font-semibold">
-                            Un Context Profile es como el <span class="bg-yellow-400 text-black px-2 py-1 rounded">ADN contextual</span> que guía a la IA en todas sus interacciones
-                        </p>
-                    </div>
                 </div>
             </div>`,
 
-            // Add more slides here (continuing from the original content)
-            // For brevity, I'll add a few more key slides
-            `<div class="slide-container h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white p-8">
-                <div class="max-w-6xl mx-auto text-center">
-                    <h1 class="text-5xl font-black mb-8">Implementación Inmediata</h1>
-                    <div class="flex items-center justify-center mb-4">
-                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
-                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
-                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+            // Add a few more key slides with responsive design
+            `<div class="slide-container h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white p-4 sm:p-8">
+                <div class="max-w-6xl mx-auto text-center h-full flex flex-col justify-center">
+                    <h1 class="text-3xl sm:text-5xl font-black mb-6 sm:mb-8">Implementación Inmediata</h1>
+                    <div class="flex items-center justify-center mb-3 sm:mb-4">
+                        <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
+                        <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
+                        <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
                     </div>
-                    <h2 class="text-2xl text-blue-100 mb-8">Tu Plan de Acción para Context Profiles</h2>
+                    <h2 class="text-lg sm:text-2xl text-blue-100 mb-6 sm:mb-8">Tu Plan de Acción</h2>
                     
-                    <div class="grid md:grid-cols-3 gap-8 mb-8">
-                        <div class="bg-white bg-opacity-10 p-6 rounded-xl">
-                            <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="text-2xl font-bold">1</span>
+                    <div class="grid sm:grid-cols-3 gap-4 sm:gap-8 mb-6 sm:mb-8">
+                        <div class="bg-white bg-opacity-10 p-4 sm:p-6 rounded-xl">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                                <span class="text-lg sm:text-2xl font-bold">1</span>
                             </div>
-                            <h3 class="text-xl font-bold mb-4">Crea tu Primer Profile</h3>
-                            <p class="text-blue-100">Utiliza las técnicas que acabas de aprender para construir tu primer Context Profile personalizado</p>
+                            <h3 class="text-lg sm:text-xl font-bold mb-2 sm:mb-4">Crea tu Primer Profile</h3>
+                            <p class="text-blue-100 text-sm sm:text-base">Utiliza las técnicas que acabas de aprender</p>
                         </div>
                         
-                        <div class="bg-white bg-opacity-10 p-6 rounded-xl">
-                            <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="text-2xl font-bold">2</span>
+                        <div class="bg-white bg-opacity-10 p-4 sm:p-6 rounded-xl">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                                <span class="text-lg sm:text-2xl font-bold">2</span>
                             </div>
-                            <h3 class="text-xl font-bold mb-4">Valida y Prueba</h3>
-                            <p class="text-blue-100">Prueba tu profile con diferentes consultas y refina basado en los resultados</p>
+                            <h3 class="text-lg sm:text-xl font-bold mb-2 sm:mb-4">Valida y Prueba</h3>
+                            <p class="text-blue-100 text-sm sm:text-base">Prueba con diferentes consultas y refina</p>
                         </div>
                         
-                        <div class="bg-white bg-opacity-10 p-6 rounded-xl">
-                            <div class="w-16 h-16 bg-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="text-2xl font-bold">3</span>
+                        <div class="bg-white bg-opacity-10 p-4 sm:p-6 rounded-xl">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 bg-indigo-500 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                                <span class="text-lg sm:text-2xl font-bold">3</span>
                             </div>
-                            <h3 class="text-xl font-bold mb-4">Implementa e Itera</h3>
-                            <p class="text-blue-100">Integra en tu flujo de trabajo y mejora continuamente basado en feedback</p>
+                            <h3 class="text-lg sm:text-xl font-bold mb-2 sm:mb-4">Implementa e Itera</h3>
+                            <p class="text-blue-100 text-sm sm:text-base">Integra en tu flujo de trabajo</p>
                         </div>
                     </div>
                     
-                    <div class="bg-yellow-400 text-black p-6 rounded-xl">
-                        <h3 class="text-2xl font-bold mb-4">Comienza Hoy</h3>
-                        <p class="text-lg">
-                            Los Context Profiles pueden multiplicar <span class="font-bold">10x la calidad</span> de tus interacciones con IA. 
-                            No esperes a estar en desventaja: el futuro pertenece a quienes dominan el arte del contexto.
+                    <div class="bg-yellow-400 text-black p-4 sm:p-6 rounded-xl">
+                        <h3 class="text-xl sm:text-2xl font-bold mb-2 sm:mb-4">Comienza Hoy</h3>
+                        <p class="text-sm sm:text-lg">
+                            Los Context Profiles pueden multiplicar <span class="font-bold">10x la calidad</span> de tus interacciones con IA.
                         </p>
                     </div>
                 </div>
             </div>`,
 
             // Final slide
-            `<div class="slide-container h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white p-8">
-                <div class="max-w-4xl mx-auto text-center">
-                    <h1 class="text-6xl font-black mb-6">Conclusión</h1>
-                    <div class="flex items-center justify-center mb-4">
-                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
-                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
-                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+            `<div class="slide-container h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white p-4 sm:p-8">
+                <div class="max-w-4xl mx-auto text-center h-full flex flex-col justify-center">
+                    <h1 class="text-4xl sm:text-6xl font-black mb-4 sm:mb-6">Conclusión</h1>
+                    <div class="flex items-center justify-center mb-3 sm:mb-4">
+                        <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
+                        <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
+                        <span class="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full mx-1 sm:mx-2"></span>
                     </div>
-                    <h2 class="text-3xl text-blue-100 mb-8">La Revolución del Contexto</h2>
+                    <h2 class="text-2xl sm:text-3xl text-blue-100 mb-6 sm:mb-8">La Revolución del Contexto</h2>
                     
-                    <div class="grid md:grid-cols-3 gap-8 mb-8">
-                        <div class="bg-white bg-opacity-10 p-6 rounded-xl">
-                            <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-rocket text-2xl"></i>
+                    <div class="grid sm:grid-cols-3 gap-4 sm:gap-8 mb-6 sm:mb-8">
+                        <div class="bg-white bg-opacity-10 p-4 sm:p-6 rounded-xl">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                                <i class="fas fa-rocket text-lg sm:text-2xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold mb-2">Rendimiento Exponencial</h3>
-                            <p class="text-blue-100">Multiplica la precisión hasta un <span class="font-bold">500%</span></p>
+                            <h3 class="text-lg sm:text-xl font-bold mb-2">Rendimiento Exponencial</h3>
+                            <p class="text-blue-100 text-sm sm:text-base">Multiplica la precisión hasta un <span class="font-bold">500%</span></p>
                         </div>
                         
-                        <div class="bg-white bg-opacity-10 p-6 rounded-xl">
-                            <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-fingerprint text-2xl"></i>
+                        <div class="bg-white bg-opacity-10 p-4 sm:p-6 rounded-xl">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                                <i class="fas fa-fingerprint text-lg sm:text-2xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold mb-2">Personalización Profunda</h3>
-                            <p class="text-blue-100">Respuestas que <span class="font-bold">reflejan tu identidad</span> única</p>
+                            <h3 class="text-lg sm:text-xl font-bold mb-2">Personalización Profunda</h3>
+                            <p class="text-blue-100 text-sm sm:text-base">Respuestas que <span class="font-bold">reflejan tu identidad</span></p>
                         </div>
                         
-                        <div class="bg-white bg-opacity-10 p-6 rounded-xl">
-                            <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-project-diagram text-2xl"></i>
+                        <div class="bg-white bg-opacity-10 p-4 sm:p-6 rounded-xl">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                                <i class="fas fa-project-diagram text-lg sm:text-2xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold mb-2">Ecosistema Contextual</h3>
-                            <p class="text-blue-100">Sistema <span class="font-bold">interconectado</span> de profiles</p>
+                            <h3 class="text-lg sm:text-xl font-bold mb-2">Ecosistema Contextual</h3>
+                            <p class="text-blue-100 text-sm sm:text-base">Sistema <span class="font-bold">interconectado</span> de profiles</p>
                         </div>
                     </div>
                     
-                    <div class="bg-blue-900 bg-opacity-50 p-6 rounded-xl mb-8">
-                        <p class="text-xl italic mb-4">
-                            "Los Context Profiles no son solo una técnica más de prompting.
-                            Son la <span class="font-semibold bg-yellow-400 text-black px-2 py-1 rounded">evolución natural</span> de cómo debemos interactuar con la IA
-                            para obtener resultados verdaderamente transformadores."
+                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-4 sm:p-6 rounded-xl">
+                        <h3 class="text-xl sm:text-2xl font-bold mb-2 sm:mb-3">¡Comienza Tu Revolución Contextual!</h3>
+                        <p class="text-sm sm:text-lg mb-3 sm:mb-4">
+                            Crea tu primer Context Profile hoy y experimenta la diferencia.
                         </p>
-                    </div>
-                    
-                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl">
-                        <h3 class="text-2xl font-bold mb-3">¡Comienza Tu Revolución Contextual!</h3>
-                        <p class="text-lg mb-4">
-                            Crea tu primer Context Profile hoy y experimenta la diferencia en tus interacciones con IA.
-                        </p>
-                        <div class="flex justify-center space-x-4">
-                            <div class="text-blue-100">
+                        <div class="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 text-sm sm:text-base">
+                            <div class="text-blue-100 flex items-center">
                                 <i class="fab fa-twitter mr-2"></i>@MarcosAGil
                             </div>
-                            <div class="text-blue-100">
+                            <div class="text-blue-100 flex items-center">
                                 <i class="fas fa-globe mr-2"></i>aliendra.com
                             </div>
                         </div>
@@ -381,6 +377,24 @@
                 </div>
             </div>`
         ];
+
+        // Responsive slide height adjustment
+        function adjustSlideHeight() {
+            const container = document.getElementById('slideContainer');
+            const viewportHeight = window.innerHeight;
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const footerHeight = document.querySelector('footer').offsetHeight;
+            const telegramBannerHeight = document.querySelector('.sm\\:hidden') ? 
+                document.querySelector('.sm\\:hidden').offsetHeight : 0;
+            
+            const availableHeight = viewportHeight - headerHeight - footerHeight - telegramBannerHeight - 64; // 64px for padding
+            const minHeight = 400;
+            const maxHeight = 800;
+            
+            const optimalHeight = Math.max(minHeight, Math.min(maxHeight, availableHeight));
+            container.style.height = `${optimalHeight}px`;
+            container.style.minHeight = `${optimalHeight}px`;
+        }
 
         function loadSlide(index) {
             document.getElementById('slideContainer').innerHTML = slides[index];
@@ -423,6 +437,7 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            adjustSlideHeight();
             loadSlide(0);
             
             // Keyboard navigation
@@ -437,6 +452,9 @@
                     goBack();
                 }
             });
+
+            // Adjust height on resize
+            window.addEventListener('resize', adjustSlideHeight);
         });
     </script>
 </body>
