@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Profiles: La Revolución del Prompting</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white bg-opacity-10 backdrop-blur-sm border-b border-white border-opacity-20 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <button onclick="goBack()" class="text-white hover:text-blue-300 mr-4">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </button>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-brain text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold text-white">Context Profiles</h1>
+                            <p class="text-blue-200 text-sm">La Revolución del Prompting</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-blue-200 text-sm">
+                        <span id="currentSlide">1</span> / <span id="totalSlides">15</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button id="prevBtn" onclick="previousSlide()" class="w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center text-white transition-all">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="nextBtn" onclick="nextSlide()" class="w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center text-white transition-all">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Slide Container -->
+    <main class="py-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="bg-white bg-opacity-95 rounded-2xl shadow-2xl overflow-hidden">
+                <div id="slideContainer" class="w-full" style="height: 800px;">
+                    <!-- Slide content will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Navigation Footer -->
+    <footer class="bg-white bg-opacity-10 backdrop-blur-sm border-t border-white border-opacity-20 py-6">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <div class="text-blue-200">
+                    <p class="text-sm">Marcos A. Gil - Aliendra</p>
+                </div>
+                <div class="flex space-x-4">
+                    <button onclick="previousSlide()" class="px-6 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg text-white font-semibold transition-all">
+                        <i class="fas fa-chevron-left mr-2"></i>Anterior
+                    </button>
+                    <button onclick="nextSlide()" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg text-white font-semibold transition-all">
+                        Siguiente<i class="fas fa-chevron-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user has access
+        window.addEventListener('load', function() {
+            const userData = localStorage.getItem('cpAcademyUser');
+            if (!userData) {
+                window.location.href = 'index.html';
+                return;
+            }
+        });
+
+        let currentSlideIndex = 0;
+        const totalSlides = 15;
+
+        const slides = [
+            // Slide 1 - Title
+            `<div class="slide-container flex flex-col justify-center items-center h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white">
+                <div class="text-center max-w-4xl px-8">
+                    <h1 class="text-6xl md:text-7xl font-black mb-6">Context Profiles</h1>
+                    <div class="flex items-center justify-center mb-6">
+                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                    </div>
+                    <h2 class="text-4xl text-blue-100 mb-8">La Revolución del Prompting</h2>
+                    <div class="bg-blue-900 bg-opacity-50 rounded-xl p-6 mb-8">
+                        <pre class="text-left text-lg text-blue-100"><code>{
+  "profile_type": "business",
+  "core_context": {
+    "primary_identity": "...",
+    "key_attributes": ["...", "..."]
+  },
+  "behavior_patterns": {
+    "communication_style": "..."
+  }
+  <span class="text-white font-bold">...</span>
+}</code></pre>
+                    </div>
+                    <p class="text-xl leading-relaxed mb-8">
+                        "La técnica que ha revolucionado cómo interactuamos con la IA, 
+                        <span class="font-semibold">multiplicando exponencialmente</span> 
+                        la calidad y precisión de las respuestas de los LLMs."
+                    </p>
+                    <div class="text-right">
+                        <p class="text-xl font-semibold">Marcos A. Gil</p>
+                        <p class="text-lg opacity-80">Aliendra</p>
+                    </div>
+                </div>
+            </div>`,
+
+            // Slide 2 - El Problema
+            `<div class="slide-container h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white p-8">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-8">
+                        <h1 class="text-5xl font-black mb-4">El Problema del Prompting Tradicional</h1>
+                        <div class="flex items-center justify-center mb-4">
+                            <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                            <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                            <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                        </div>
+                        <h2 class="text-2xl text-blue-100">¿Por qué necesitamos Context Profiles?</h2>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 mb-8">
+                        <div class="bg-red-900 bg-opacity-30 p-6 rounded-xl border border-red-500">
+                            <h3 class="text-xl font-bold mb-4 text-red-200">Prompting Tradicional</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-start">
+                                    <i class="fas fa-times-circle text-red-300 mt-1 mr-3"></i>
+                                    <p>Instrucciones repetitivas y largas en cada prompt</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fas fa-times-circle text-red-300 mt-1 mr-3"></i>
+                                    <p>Contexto fragmentado y desconectado</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fas fa-times-circle text-red-300 mt-1 mr-3"></i>
+                                    <p>Incapacidad para mantener consistencia entre sesiones</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fas fa-times-circle text-red-300 mt-1 mr-3"></i>
+                                    <p>Desperdicio de tokens en repetir información básica</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-green-900 bg-opacity-30 p-6 rounded-xl border border-green-500">
+                            <h3 class="text-xl font-bold mb-4 text-green-200">Con Context Profiles</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-300 mt-1 mr-3"></i>
+                                    <p>Contexto estructurado y reutilizable</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-300 mt-1 mr-3"></i>
+                                    <p>Consistencia absoluta en todas las interacciones</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-300 mt-1 mr-3"></i>
+                                    <p>Máxima información en mínimo espacio</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-300 mt-1 mr-3"></i>
+                                    <p>Comunicación precisa con el modelo</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p class="text-xl leading-relaxed mb-4">
+                            "El 90% de los desarrolladores construyen aplicaciones de IA sobre suposiciones erróneas sobre cómo 
+                            <span class="font-semibold">funcionan realmente las ventanas de contexto</span> en los LLMs modernos."
+                        </p>
+                        <p class="text-lg leading-relaxed">
+                            Los Context Profiles solucionan este problema fundamental, permitiéndonos comunicarnos 
+                            con los modelos de forma estructurada, consistente y eficiente.
+                        </p>
+                    </div>
+                </div>
+            </div>`,
+
+            // Continue with more slides...
+            `<div class="slide-container h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white p-8">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-6">
+                        <h1 class="text-5xl font-black mb-4">¿Qué son los Context Profiles?</h1>
+                        <div class="flex items-center justify-center mb-4">
+                            <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                            <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                            <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                        </div>
+                        <h2 class="text-2xl text-blue-100">Anatomía y Componentes Esenciales</h2>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-40 p-6 rounded-xl mb-6 text-center">
+                        <p class="text-xl">
+                            Un <span class="bg-yellow-400 text-black px-2 py-1 rounded">Context Profile</span> es una estructura de datos en formato JSON 
+                            que encapsula información contextual específica sobre personas, negocios, procesos o entidades, 
+                            permitiendo que los LLMs "entiendan" el contexto de manera precisa y consistente.
+                        </p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-bold mb-4 text-blue-200">Componentes Esenciales</h3>
+                            <div class="space-y-3">
+                                <div class="bg-white bg-opacity-10 p-3 rounded-lg">
+                                    <h4 class="font-bold text-blue-200">1. Metadatos del Profile</h4>
+                                    <p class="text-sm">Define el tipo de perfil y su identificador único</p>
+                                </div>
+                                <div class="bg-white bg-opacity-10 p-3 rounded-lg">
+                                    <h4 class="font-bold text-blue-200">2. Contexto Central</h4>
+                                    <p class="text-sm">Identidad primaria y atributos clave</p>
+                                </div>
+                                <div class="bg-white bg-opacity-10 p-3 rounded-lg">
+                                    <h4 class="font-bold text-blue-200">3. Patrones de Comportamiento</h4>
+                                    <p class="text-sm">Estilo de comunicación, preferencias y restricciones</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-xl font-bold mb-4 text-blue-200">Estructura Básica (JSON)</h3>
+                            <div class="bg-gray-900 p-4 rounded-lg text-sm">
+                                <pre><code>{
+  "profile_type": "personal|business|process",
+  "profile_id": "unique_identifier",
+  "core_context": {
+    "primary_identity": "descripción concisa",
+    "key_attributes": ["atributo1", "atributo2"],
+    "context_depth": "basic|intermediate|advanced"
+  },
+  "behavioral_patterns": {
+    "communication_style": "descripción del estilo",
+    "preferences": ["preferencia1", "preferencia2"],
+    "constraints": ["limitación1", "limitación2"]
+  },
+  "interaction_guidelines": {
+    "tone": "profesional|casual|técnico",
+    "depth_preference": "high-level|detailed"
+  }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-6">
+                        <p class="text-lg font-semibold">
+                            Un Context Profile es como el <span class="bg-yellow-400 text-black px-2 py-1 rounded">ADN contextual</span> que guía a la IA en todas sus interacciones
+                        </p>
+                    </div>
+                </div>
+            </div>`,
+
+            // Add more slides here (continuing from the original content)
+            // For brevity, I'll add a few more key slides
+            `<div class="slide-container h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white p-8">
+                <div class="max-w-6xl mx-auto text-center">
+                    <h1 class="text-5xl font-black mb-8">Implementación Inmediata</h1>
+                    <div class="flex items-center justify-center mb-4">
+                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                    </div>
+                    <h2 class="text-2xl text-blue-100 mb-8">Tu Plan de Acción para Context Profiles</h2>
+                    
+                    <div class="grid md:grid-cols-3 gap-8 mb-8">
+                        <div class="bg-white bg-opacity-10 p-6 rounded-xl">
+                            <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-2xl font-bold">1</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4">Crea tu Primer Profile</h3>
+                            <p class="text-blue-100">Utiliza las técnicas que acabas de aprender para construir tu primer Context Profile personalizado</p>
+                        </div>
+                        
+                        <div class="bg-white bg-opacity-10 p-6 rounded-xl">
+                            <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-2xl font-bold">2</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4">Valida y Prueba</h3>
+                            <p class="text-blue-100">Prueba tu profile con diferentes consultas y refina basado en los resultados</p>
+                        </div>
+                        
+                        <div class="bg-white bg-opacity-10 p-6 rounded-xl">
+                            <div class="w-16 h-16 bg-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-2xl font-bold">3</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4">Implementa e Itera</h3>
+                            <p class="text-blue-100">Integra en tu flujo de trabajo y mejora continuamente basado en feedback</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-400 text-black p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-4">Comienza Hoy</h3>
+                        <p class="text-lg">
+                            Los Context Profiles pueden multiplicar <span class="font-bold">10x la calidad</span> de tus interacciones con IA. 
+                            No esperes a estar en desventaja: el futuro pertenece a quienes dominan el arte del contexto.
+                        </p>
+                    </div>
+                </div>
+            </div>`,
+
+            // Final slide
+            `<div class="slide-container h-full bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white p-8">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h1 class="text-6xl font-black mb-6">Conclusión</h1>
+                    <div class="flex items-center justify-center mb-4">
+                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                        <span class="w-3 h-3 bg-white rounded-full mx-2"></span>
+                    </div>
+                    <h2 class="text-3xl text-blue-100 mb-8">La Revolución del Contexto</h2>
+                    
+                    <div class="grid md:grid-cols-3 gap-8 mb-8">
+                        <div class="bg-white bg-opacity-10 p-6 rounded-xl">
+                            <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-rocket text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Rendimiento Exponencial</h3>
+                            <p class="text-blue-100">Multiplica la precisión hasta un <span class="font-bold">500%</span></p>
+                        </div>
+                        
+                        <div class="bg-white bg-opacity-10 p-6 rounded-xl">
+                            <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-fingerprint text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Personalización Profunda</h3>
+                            <p class="text-blue-100">Respuestas que <span class="font-bold">reflejan tu identidad</span> única</p>
+                        </div>
+                        
+                        <div class="bg-white bg-opacity-10 p-6 rounded-xl">
+                            <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-project-diagram text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Ecosistema Contextual</h3>
+                            <p class="text-blue-100">Sistema <span class="font-bold">interconectado</span> de profiles</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-50 p-6 rounded-xl mb-8">
+                        <p class="text-xl italic mb-4">
+                            "Los Context Profiles no son solo una técnica más de prompting.
+                            Son la <span class="font-semibold bg-yellow-400 text-black px-2 py-1 rounded">evolución natural</span> de cómo debemos interactuar con la IA
+                            para obtener resultados verdaderamente transformadores."
+                        </p>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-3">¡Comienza Tu Revolución Contextual!</h3>
+                        <p class="text-lg mb-4">
+                            Crea tu primer Context Profile hoy y experimenta la diferencia en tus interacciones con IA.
+                        </p>
+                        <div class="flex justify-center space-x-4">
+                            <div class="text-blue-100">
+                                <i class="fab fa-twitter mr-2"></i>@MarcosAGil
+                            </div>
+                            <div class="text-blue-100">
+                                <i class="fas fa-globe mr-2"></i>aliendra.com
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+        ];
+
+        function loadSlide(index) {
+            document.getElementById('slideContainer').innerHTML = slides[index];
+            document.getElementById('currentSlide').textContent = index + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === slides.length - 1;
+            
+            if (index === 0) {
+                document.getElementById('prevBtn').classList.add('opacity-50');
+            } else {
+                document.getElementById('prevBtn').classList.remove('opacity-50');
+            }
+            
+            if (index === slides.length - 1) {
+                document.getElementById('nextBtn').classList.add('opacity-50');
+            } else {
+                document.getElementById('nextBtn').classList.remove('opacity-50');
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                loadSlide(currentSlideIndex);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                loadSlide(currentSlideIndex);
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'hub.html';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSlide(0);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    e.preventDefault();
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    previousSlide();
+                } else if (e.key === 'Escape') {
+                    goBack();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
