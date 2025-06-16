@@ -180,7 +180,7 @@ frontend:
   - task: "Create Context Profiles presentation from provided HTML"
     implemented: true
     working: true
-    file: "/app/static-website/context-profiles-presentation.html"
+    file: "/app/static-website/context-profile.html"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
@@ -188,6 +188,42 @@ frontend:
       - working: true
         agent: "main"
         comment: "Successfully created the complete Context Profiles presentation with 15 slides. Applied improved contrast styles with white/light backgrounds, updated community numbers to +120, integrated custom profile image, added navigation controls, keyboard/touch support, and proper CTA to Telegram. Updated hub.html to redirect to this presentation."
+
+  - task: "Fix hub.html design and background contrast"
+    implemented: true
+    working: true
+    file: "/app/static-website/hub.html"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Completely redesigned hub.html with vintage white background featuring subtle cyan/blue circular gradients. Updated first module card to match dark blue style of other cards. Changed all text colors for better contrast on new white background. Updated header, footer, and progress section styling."
+
+  - task: "Change testimonial quote"
+    implemented: true
+    working: true
+    file: "/app/static-website/index.html"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Updated testimonial quote from '90% de los desarrolladores construyen aplicaciones...' to 'La habilidad más infravalorada de este 2025 es el prompting' as requested."
+
+  - task: "Rename presentation file to context-profile.html"
+    implemented: true
+    working: true
+    file: "/app/static-website/context-profile.html"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Renamed context-profiles-presentation.html to context-profile.html and updated hub.html redirect accordingly. File is now accessible at the correct path."
 
 metadata:
   created_by: "main_agent"
