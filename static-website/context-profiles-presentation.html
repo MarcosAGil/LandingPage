@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Profiles: La Revolución del Prompting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            /* Fondo mejorado con mejor contraste */
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.95) 0%, 
+                rgba(248, 250, 252, 0.92) 25%, 
+                rgba(241, 245, 249, 0.90) 50%, 
+                rgba(238, 242, 248, 0.88) 75%, 
+                rgba(235, 239, 247, 0.85) 100%);
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(226, 232, 240, 0.4);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(59, 130, 246, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50px;
+            padding: 12px 24px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(29, 78, 216, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-counter {
+            background: rgba(59, 130, 246, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 30px;
+            padding: 8px 16px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 90%;
+            padding: 60px;
+            text-align: center;
+            color: #1a202c; /* Texto más oscuro para mejor contraste */
+        }
+
+        .slide h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #1a202c;
+        }
+
+        .slide h2 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #1a202c;
+        }
+
+        .slide h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #059669; /* Verde más visible */
+        }
+
+        .slide p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #4a5568;
+            opacity: 1;
+        }
+
+        .slide ul {
+            text-align: left;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #4a5568;
+        }
+
+        .slide li {
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .slide li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #059669;
+            font-weight: bold;
+        }
+
+        .code-block {
+            background: rgba(31, 41, 55, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.6;
+            text-align: left;
+            border: 1px solid rgba(75, 85, 99, 0.4);
+            color: #f9fafb;
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, #059669, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            color: #1a202c;
+        }
+
+        .before {
+            border-left: 5px solid #ef4444;
+        }
+
+        .after {
+            border-left: 5px solid #10b981;
+        }
+
+        /* Estilos para el header con perfil */
+        .profile-header {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 8px 16px;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+        }
+
+        .profile-header img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .profile-header span {
+            color: #1a202c;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Botón de regreso */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            color: #1a202c;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(59, 130, 246, 0.9);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .slide h1 { font-size: 2.5rem; }
+            .slide h2 { font-size: 2rem; }
+            .slide-content { padding: 30px 20px; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .nav-controls { bottom: 20px; }
+            .profile-header { 
+                top: 10px; 
+                right: 10px;
+                padding: 6px 12px;
+            }
+            .back-btn {
+                top: 10px;
+                left: 10px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header con perfil y botón de regreso -->
+    <a href="hub.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    
+    <div class="profile-header">
+        <img src="images/foto-perfil.png" alt="Ai Lendra Profile">
+        <span>Ai Lendra - +120 expertos</span>
+    </div>
+
+    <!-- Slide 1: Portada -->
+    <div class="slide active" id="slide-1">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-brain text-6xl mb-8" style="color: #059669;"></i>
+            <h1>Context Profiles</h1>
+            <p class="text-2xl mb-8 highlight">La Revolución del Prompting</p>
+            <p class="text-xl">Transforma tus interacciones con IA mediante perfiles de contexto optimizados</p>
+        </div>
+    </div>
+
+    <!-- Slide 2: El Problema del Prompting Tradicional -->
+    <div class="slide" id="slide-2">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-exclamation-triangle text-6xl mb-8" style="color: #ef4444;"></i>
+            <h2>El Problema del Prompting Tradicional</h2>
+            <ul>
+                <li>Respuestas inconsistentes y genéricas</li>
+                <li>Falta de contexto específico del dominio</li>
+                <li>Necesidad de reescribir prompts constantemente</li>
+                <li>Pérdida de información entre conversaciones</li>
+                <li>Dificultad para mantener coherencia en proyectos largos</li>
+            </ul>
+            <p class="text-xl mt-8 highlight">¿Te suena familiar?</p>
+        </div>
+    </div>
+
+    <!-- Slide 3: ¿Qué son los Context Profiles? -->
+    <div class="slide" id="slide-3">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-user-cog text-6xl mb-8" style="color: #3b82f6;"></i>
+            <h2>¿Qué son los Context Profiles?</h2>
+            <p class="text-xl mb-6">Un Context Profile es un <span class="highlight">conjunto estructurado de información</span> que define:</p>
+            <ul>
+                <li>Tu rol y experiencia específica</li>
+                <li>El contexto del proyecto actual</li>
+                <li>Preferencias de comunicación</li>
+                <li>Objetivos y restricciones</li>
+                <li>Formato de respuesta deseado</li>
+            </ul>
+            <p class="text-lg mt-8">Es como darle a la IA tu "ADN profesional"</p>
+        </div>
+    </div>
+
+    <!-- Slide 4: Ejemplo Práctico: Context Profile -->
+    <div class="slide" id="slide-4">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-code text-6xl mb-8" style="color: #10b981;"></i>
+            <h2>Ejemplo Práctico: Context Profile</h2>
+            <div class="code-block">
+                <strong>ROL:</strong> Senior Full-Stack Developer especializado en React y Node.js<br>
+                <strong>PROYECTO:</strong> E-commerce B2B con microservicios<br>
+                <strong>STACK:</strong> React 18, Node.js, PostgreSQL, Docker, AWS<br>
+                <strong>ESTILO:</strong> Código limpio, patrones SOLID, testing exhaustivo<br>
+                <strong>FORMATO:</strong> Respuestas concisas con ejemplos de código<br>
+                <strong>RESTRICCIONES:</strong> Solo librerías con licencia MIT
+            </div>
+            <p class="text-lg highlight">Resultado: Respuestas 10x más precisas y útiles</p>
+        </div>
+    </div>
+
+    <!-- Slide 5: Métodos de Inyección -->
+    <div class="slide" id="slide-5">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-syringe text-6xl mb-8" style="color: #8b5cf6;"></i>
+            <h2>Métodos de Inyección</h2>
+            <div class="comparison-grid">
+                <div class="comparison-item">
+                    <h3>🔵 Inyección Directa</h3>
+                    <p>Incluir el profile al inicio de cada conversación</p>
+                    <p><strong>Ventaja:</strong> Control total</p>
+                    <p><strong>Desventaja:</strong> Manual</p>
+                </div>
+                <div class="comparison-item">
+                    <h3>🔴 Inyección por Template</h3>
+                    <p>Usar plantillas predefinidas que se activan automáticamente</p>
+                    <p><strong>Ventaja:</strong> Automatización</p>
+                    <p><strong>Desventaja:</strong> Menos flexibilidad</p>
+                </div>
+            </div>
+            <p class="text-lg highlight">Recomendación: Combinar ambos métodos</p>
+        </div>
+    </div>
+
+    <!-- Slide 6: Construyendo Context Profiles -->
+    <div class="slide" id="slide-6">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-hammer text-6xl mb-8" style="color: #f59e0b;"></i>
+            <h2>Construyendo Context Profiles</h2>
+            <h3>Los 5 Pilares Fundamentales:</h3>
+            <ul>
+                <li><strong>IDENTIDAD:</strong> Quién eres profesionalmente</li>
+                <li><strong>CONTEXTO:</strong> En qué estás trabajando</li>
+                <li><strong>OBJETIVOS:</strong> Qué quieres lograr</li>
+                <li><strong>RESTRICCIONES:</strong> Qué limitaciones tienes</li>
+                <li><strong>FORMATO:</strong> Cómo quieres las respuestas</li>
+            </ul>
+            <p class="text-lg mt-6">Cada pilar debe ser específico y actionable</p>
+        </div>
+    </div>
+
+    <!-- Slide 7: Técnicas Avanzadas de Optimización -->
+    <div class="slide" id="slide-7">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-rocket text-6xl mb-8" style="color: #ef4444;"></i>
+            <h2>Técnicas Avanzadas de Optimización</h2>
+            <ul>
+                <li><strong>Layered Contexts:</strong> Contextos anidados por complejidad</li>
+                <li><strong>Dynamic Profiling:</strong> Profiles que se adaptan en tiempo real</li>
+                <li><strong>Context Chaining:</strong> Vincular múltiples profiles</li>
+                <li><strong>Semantic Anchoring:</strong> Palabras clave que activan comportamientos</li>
+                <li><strong>Feedback Loops:</strong> Profiles que aprenden de tus correcciones</li>
+            </ul>
+            <p class="text-lg mt-6 highlight">Nivel ninja: Context Profiles que evolucionan contigo</p>
+        </div>
+    </div>
+
+    <!-- Slide 8: Errores Comunes y Cómo Evitarlos -->
+    <div class="slide" id="slide-8">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-bug text-6xl mb-8" style="color: #eab308;"></i>
+            <h2>Errores Comunes y Cómo Evitarlos</h2>
+            <div class="comparison-grid">
+                <div class="comparison-item before">
+                    <h3>❌ ERROR</h3>
+                    <p>Profiles demasiado genéricos</p>
+                    <p>Información contradictoria</p>
+                    <p>Demasiado texto</p>
+                    <p>No actualizar el contexto</p>
+                </div>
+                <div class="comparison-item after">
+                    <h3>✅ SOLUCIÓN</h3>
+                    <p>Ser específico y detallado</p>
+                    <p>Revisar coherencia interna</p>
+                    <p>Priorizar información clave</p>
+                    <p>Mantener profiles actualizados</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Casos de Uso y Templates -->
+    <div class="slide" id="slide-9">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-briefcase text-6xl mb-8" style="color: #06b6d4;"></i>
+            <h2>Casos de Uso y Templates</h2>
+            <ul>
+                <li><strong>Desarrollo de Software:</strong> Stack, metodología, testing</li>
+                <li><strong>Marketing Digital:</strong> Audiencia, canales, métricas</li>
+                <li><strong>Consultoría:</strong> Industria, frameworks, deliverables</li>
+                <li><strong>Educación:</strong> Nivel, materia, pedagogía</li>
+                <li><strong>Investigación:</strong> Campo, metodología, objetivos</li>
+            </ul>
+            <p class="text-lg mt-6 highlight">Templates disponibles en la comunidad Ai Lendra</p>
+        </div>
+    </div>
+
+    <!-- Slide 10: Herramientas y Workflows Prácticos -->
+    <div class="slide" id="slide-10">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-tools text-6xl mb-8" style="color: #6b7280;"></i>
+            <h2>Herramientas y Workflows Prácticos</h2>
+            <div class="comparison-grid">
+                <div class="comparison-item">
+                    <h3>🛠️ Herramientas</h3>
+                    <p>Notion para gestión</p>
+                    <p>GitHub para versionado</p>
+                    <p>Obsidian para linking</p>
+                    <p>Claude/GPT para testing</p>
+                </div>
+                <div class="comparison-item">
+                    <h3>🔄 Workflow</h3>
+                    <p>1. Definir contexto base</p>
+                    <p>2. Testear con casos reales</p>
+                    <p>3. Iterar basado en resultados</p>
+                    <p>4. Documentar y versionar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: Caso de Estudio: Antes vs. Después -->
+    <div class="slide" id="slide-11">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-chart-line text-6xl mb-8" style="color: #10b981;"></i>
+            <h2>Caso de Estudio: Antes vs. Después</h2>
+            <div class="comparison-grid">
+                <div class="comparison-item before">
+                    <h3>ANTES (Sin Context Profile)</h3>
+                    <p>⏱️ 15 min por consulta</p>
+                    <p>🔄 3-4 iteraciones</p>
+                    <p>📊 40% respuestas útiles</p>
+                    <p>😰 Frustración alta</p>
+                </div>
+                <div class="comparison-item after">
+                    <h3>DESPUÉS (Con Context Profile)</h3>
+                    <p>⚡ 3 min por consulta</p>
+                    <p>🎯 1-2 iteraciones</p>
+                    <p>🚀 85% respuestas útiles</p>
+                    <p>😊 Alta satisfacción</p>
+                </div>
+            </div>
+            <p class="text-xl mt-6 highlight">ROI: 400% mejora en productividad</p>
+        </div>
+    </div>
+
+    <!-- Slide 12: Estrategias de Implementación Real -->
+    <div class="slide" id="slide-12">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-chess text-6xl mb-8" style="color: #3b82f6;"></i>
+            <h2>Estrategias de Implementación Real</h2>
+            <h3>Plan de 30 días:</h3>
+            <ul>
+                <li><strong>Semana 1:</strong> Auditar tus prompts actuales</li>
+                <li><strong>Semana 2:</strong> Crear tu primer Context Profile</li>
+                <li><strong>Semana 3:</strong> Testear y refinar en proyectos reales</li>
+                <li><strong>Semana 4:</strong> Escalar a todo tu equipo</li>
+            </ul>
+            <p class="text-lg mt-6">Empezar pequeño, iterar rápido, escalar inteligentemente</p>
+        </div>
+    </div>
+
+    <!-- Slide 13: El Futuro de los Context Profiles -->
+    <div class="slide" id="slide-13">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-crystal-ball text-6xl mb-8" style="color: #8b5cf6;"></i>
+            <h2>El Futuro de los Context Profiles</h2>
+            <ul>
+                <li><strong>AI-Generated Profiles:</strong> IA que crea profiles automáticamente</li>
+                <li><strong>Cross-Platform Sync:</strong> Sincronización entre todas las IAs</li>
+                <li><strong>Predictive Context:</strong> Contextos que anticipan necesidades</li>
+                <li><strong>Collaborative Profiles:</strong> Profiles compartidos en equipos</li>
+                <li><strong>Industry Standards:</strong> Protocolos estándar para profiles</li>
+            </ul>
+            <p class="text-lg mt-6 highlight">El futuro del trabajo con IA es contextual</p>
+        </div>
+    </div>
+
+    <!-- Slide 14: Implementación Inmediata -->
+    <div class="slide" id="slide-14">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-play-circle text-6xl mb-8" style="color: #10b981;"></i>
+            <h2>Implementación Inmediata</h2>
+            <h3>Tu primer Context Profile en 5 minutos:</h3>
+            <div class="code-block">
+                <strong>MI PROFILE:</strong><br>
+                Soy [TU ROL] especializado en [TU ÁREA]<br>
+                Trabajo en [TIPO DE PROYECTO/EMPRESA]<br>
+                Prefiero respuestas [ESTILO: concisas/detalladas]<br>
+                Mi objetivo actual es [OBJETIVO ESPECÍFICO]<br>
+                Restricciones: [LIMITACIONES IMPORTANTES]
+            </div>
+            <p class="text-xl highlight">¡Copia, adapta y usa ahora mismo!</p>
+        </div>
+    </div>
+
+    <!-- Slide 15: Conclusión -->
+    <div class="slide" id="slide-15">
+        <div class="slide-content glass-effect">
+            <i class="fas fa-trophy text-6xl mb-8" style="color: #eab308;"></i>
+            <h2>Conclusión</h2>
+            <p class="text-2xl mb-8">Los Context Profiles no son solo una técnica...</p>
+            <p class="text-xl mb-8 highlight">Son la evolución natural del prompting</p>
+            <ul>
+                <li>Multiplican tu productividad con IA</li>
+                <li>Reducen frustración y tiempo perdido</li>
+                <li>Crean resultados consistentes y profesionales</li>
+                <li>Te posicionan como un power user de IA</li>
+            </ul>
+            <p class="text-2xl mt-8 highlight">¿Estás listo para revolucionar tu prompting?</p>
+            
+            <!-- CTA final para unirse a Telegram -->
+            <div class="mt-12 p-6 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl">
+                <h3 class="text-xl font-bold text-white mb-4">¡Únete a nuestra comunidad!</h3>
+                <p class="text-cyan-100 mb-4">Conecta con +120 expertos en IA y sigue aprendiendo</p>
+                <a href="https://t.me/ai_lendra" target="_blank" class="inline-flex items-center bg-white text-cyan-600 font-bold py-3 px-6 rounded-xl hover:bg-cyan-50 transition-all duration-200 transform hover:scale-105">
+                    <img src="images/foto-perfil.png" alt="Ai Lendra" class="w-5 h-5 mr-2 rounded-full object-cover">
+                    Unirse a Telegram GRATIS
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">
+            <i class="fas fa-chevron-left"></i>
+            Anterior
+        </button>
+        <div class="page-counter" id="pageCounter">1/15</div>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">
+            Siguiente
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 15;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+
+            if (n > totalSlides) currentSlide = totalSlides;
+            if (n < 1) currentSlide = 1;
+
+            slides.forEach(slide => slide.classList.remove('active'));
+            document.getElementById(`slide-${currentSlide}`).classList.add('active');
+
+            // Update page counter
+            document.getElementById('pageCounter').textContent = `${currentSlide}/${totalSlides}`;
+
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (event.key === 'ArrowRight') {
+                changeSlide(1);
+            } else if (event.key === 'Home') {
+                currentSlide = 1;
+                showSlide(currentSlide);
+            } else if (event.key === 'End') {
+                currentSlide = totalSlides;
+                showSlide(currentSlide);
+            } else if (event.key === 'Escape') {
+                window.location.href = 'hub.html';
+            }
+        });
+
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', function(event) {
+            touchStartX = event.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', function(event) {
+            touchEndX = event.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left - next slide
+                    changeSlide(1);
+                } else {
+                    // Swipe right - previous slide
+                    changeSlide(-1);
+                }
+            }
+        }
+
+        // Initialize
+        showSlide(1);
+
+        // Smooth transitions on load
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '1';
+        });
+    </script>
+</body>
+</html>
