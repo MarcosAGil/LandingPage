@@ -245,15 +245,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Verify custom profile image loads correctly across all pages"
-    - "Test responsive behavior of new image elements" 
-    - "Validate all Telegram links still work properly"
-    - "Test Context Profiles presentation functionality"
-    - "Verify improved contrast readability"
-    - "Confirm corrected community numbers display properly"
-    - "Test new hub.html design with vintage white background"
-    - "Verify module card color consistency"
-    - "Test context-profile.html redirection"
+    - "Verify all blue gradients have been successfully inverted"
+    - "Test new context-profile.html content displays correctly"
+    - "Ensure gradient inversions work across all devices and screen sizes"
+    - "Validate visual consistency after gradient changes"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
