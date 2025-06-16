@@ -3,297 +3,523 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Context Profiles: La Revolución del Prompting</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <title>Context Profiles - La Revolución del Prompting</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #0f172a;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            min-height: 100vh;
         }
 
         .slide {
-            display: none;
-            width: 100vw;
-            height: 100vh;
-            /* Fondo mejorado con mejor contraste */
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.95) 0%, 
-                rgba(248, 250, 252, 0.92) 25%, 
-                rgba(241, 245, 249, 0.90) 50%, 
-                rgba(238, 242, 248, 0.88) 75%, 
-                rgba(235, 239, 247, 0.85) 100%);
-            position: relative;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .slide.active {
+            min-height: 100vh;
+            padding: 60px 40px 100px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
-
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(226, 232, 240, 0.4);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-controls {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .nav-btn {
-            background: rgba(59, 130, 246, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 50px;
-            padding: 12px 24px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-btn:hover {
-            background: rgba(29, 78, 216, 0.9);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-        }
-
-        .nav-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .page-counter {
-            background: rgba(59, 130, 246, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 30px;
-            padding: 8px 16px;
-            color: white;
-            font-weight: 600;
-            font-size: 14px;
+            position: relative;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(6, 182, 212, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(6, 182, 212, 0.02) 0%, transparent 50%);
         }
 
         .slide-content {
             max-width: 1200px;
-            width: 90%;
-            padding: 60px;
+            width: 100%;
             text-align: center;
-            color: #1a202c; /* Texto más oscuro para mejor contraste */
+            z-index: 2;
         }
 
-        .slide h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 2rem;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            color: #1a202c;
+        .slide-footer {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 60px;
+            z-index: 10;
         }
 
-        .slide h2 {
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .slide-number {
+            background: rgba(6, 182, 212, 0.1);
+            color: #06b6d4;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        h1 {
             font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: #0f172a;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 2.8rem;
             font-weight: 700;
             margin-bottom: 2rem;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            color: #1a202c;
+            color: #0f172a;
+            line-height: 1.2;
         }
 
-        .slide h3 {
+        h3 {
             font-size: 2rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
-            color: #059669; /* Verde más visible */
+            color: #06b6d4;
+            line-height: 1.3;
         }
 
-        .slide p {
+        .subtitle {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #06b6d4;
+            margin-bottom: 2rem;
+        }
+
+        .hero-quote {
             font-size: 1.3rem;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-            color: #4a5568;
-            opacity: 1;
+            font-style: italic;
+            color: #475569;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(6, 182, 212, 0.05);
+            border-left: 4px solid #06b6d4;
+            border-radius: 8px;
         }
 
-        .slide ul {
-            text-align: left;
-            font-size: 1.2rem;
-            line-height: 1.8;
-            max-width: 800px;
-            margin: 0 auto;
-            color: #4a5568;
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            border: 4px solid #06b6d4;
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
         }
 
-        .slide li {
+        .vs-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 3rem;
+            align-items: start;
+            margin: 3rem 0;
+        }
+
+        .vs-section {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(6, 182, 212, 0.1);
+        }
+
+        .vs-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4);
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .component-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(6, 182, 212, 0.15);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(6, 182, 212, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .component-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(6, 182, 212, 0.15);
+        }
+
+        .component-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 1rem;
-            position: relative;
-            padding-left: 30px;
-        }
-
-        .slide li::before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: #059669;
-            font-weight: bold;
         }
 
         .code-block {
-            background: rgba(31, 41, 55, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 25px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 1rem;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 2rem;
+            border-radius: 12px;
+            font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
+            font-size: 14px;
             line-height: 1.6;
-            text-align: left;
-            border: 1px solid rgba(75, 85, 99, 0.4);
-            color: #f9fafb;
+            overflow-x: auto;
+            margin: 2rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            white-space: pre;
         }
 
-        .highlight {
-            background: linear-gradient(45deg, #059669, #10b981);
+        .json-key {
+            color: #7dd3fc;
+        }
+
+        .json-string {
+            color: #86efac;
+        }
+
+        .json-number {
+            color: #fbbf24;
+        }
+
+        .json-boolean {
+            color: #f472b6;
+        }
+
+        .keyword {
+            color: #c084fc;
+        }
+
+        .string {
+            color: #86efac;
+        }
+
+        .comment {
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .function {
+            color: #60a5fa;
+        }
+
+        .step-process {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .step-item {
+            flex: 1;
+            min-width: 180px;
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            border: 2px solid rgba(6, 182, 212, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .step-item:hover {
+            border-color: #06b6d4;
+            transform: translateY(-3px);
+        }
+
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+        }
+
+        .metric-value {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
+            margin-bottom: 0.5rem;
         }
 
         .comparison-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin: 30px 0;
+            gap: 3rem;
+            margin: 3rem 0;
         }
 
-        .comparison-item {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 15px;
-            padding: 25px;
-            border: 1px solid rgba(226, 232, 240, 0.6);
-            color: #1a202c;
+        .comparison-section {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.1);
         }
 
-        .before {
-            border-left: 5px solid #ef4444;
+        .error-example {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
         }
 
-        .after {
-            border-left: 5px solid #10b981;
+        .correct-example {
+            background: rgba(34, 197, 94, 0.05);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
         }
 
-        /* Estilos para el header con perfil */
-        .profile-header {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
+        .template-section {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 32px rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            text-align: left;
+        }
+
+        .icon-section {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 50px;
-            padding: 8px 16px;
-            border: 1px solid rgba(226, 232, 240, 0.6);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .profile-header img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-
-        .profile-header span {
-            color: #1a202c;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        /* Botón de regreso */
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
+        .section-icon {
             width: 48px;
             height: 48px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(226, 232, 240, 0.6);
-            color: #1a202c;
-            text-decoration: none;
-            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.5rem;
         }
 
-        .back-btn:hover {
-            background: rgba(59, 130, 246, 0.9);
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .checklist li::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .final-cta {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
             color: white;
-            transform: translateY(-2px);
+            padding: 3rem;
+            border-radius: 16px;
+            margin: 3rem 0;
+            box-shadow: 0 12px 40px rgba(6, 182, 212, 0.3);
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #06b6d4;
+            font-weight: 600;
         }
 
         @media (max-width: 768px) {
-            .slide h1 { font-size: 2.5rem; }
-            .slide h2 { font-size: 2rem; }
-            .slide-content { padding: 30px 20px; }
-            .comparison-grid { grid-template-columns: 1fr; }
-            .nav-controls { bottom: 20px; }
-            .profile-header { 
-                top: 10px; 
-                right: 10px;
-                padding: 6px 12px;
+            .slide {
+                padding: 40px 20px 80px;
             }
-            .back-btn {
-                top: 10px;
-                left: 10px;
-                width: 40px;
-                height: 40px;
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .vs-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .component-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .step-process {
+                flex-direction: column;
+            }
+            
+            .slide-footer {
+                padding: 0 20px;
+            }
+            
+            .author-info {
+                gap: 20px;
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header con perfil y botón de regreso -->
-    <a href="hub.html" class="back-btn">
-        <i class="fas fa-arrow-left"></i>
-    </a>
-    
-    <div class="profile-header">
-        <img src="images/foto-perfil.png" alt="Ai Lendra Profile">
-        <span>Ai Lendra - +120 expertos</span>
-    </div>
-
     <!-- Slide 1: Portada -->
-    <div class="slide active" id="slide-1">
-        <div class="slide-content glass-effect">
-            <i class="fas fa-brain text-6xl mb-8" style="color: #059669;"></i>
-            <h1>Context Profiles</h1>
-            <p class="text-2xl mb-8 highlight">La Revolución del Prompting</p>
-            <p class="text-xl">Transforma tus interacciones con IA mediante perfiles de contexto optimizados</p>
+    <div class="slide">
+        <div class="slide-content">
+            <img src="images/foto-perfil.png" alt="Marcos A. Gil" class="profile-image">
+            <h2 class="subtitle">Context Profiles</h2>
+            <h1>La Revolución del Prompting</h1>
+            
+            <div class="code-block">
+<span class="json-key">{</span>
+  <span class="json-key">"profile_type"</span>: <span class="json-string">"business"</span>,
+  <span class="json-key">"core_context"</span>: <span class="json-key">{</span>
+    <span class="json-key">"primary_identity"</span>: <span class="json-string">"..."</span>,
+    <span class="json-key">"key_attributes"</span>: [<span class="json-string">"..."</span>, <span class="json-string">"..."</span>]
+  <span class="json-key">}</span>,
+  <span class="json-key">"behavior_patterns"</span>: <span class="json-key">{</span>
+    <span class="json-key">"communication_style"</span>: <span class="json-string">"..."</span>
+  <span class="json-key">}</span>
+  ...
+<span class="json-key">}</span>
+            </div>
+
+            <div class="hero-quote">
+                "La técnica que ha revolucionado cómo interactuamos con la IA, multiplicando exponencialmente la calidad y precisión de las respuestas de los LLMs."
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <div class="author-info">
+                <span>Marcos A. Gil</span>
+                <span>Aliendra</span>
+            </div>
+            <div class="slide-number">1/15</div>
         </div>
     </div>
+
+    <!-- Slide 2: El Problema -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>El Problema del Prompting Tradicional</h2>
+            <h3>¿Por qué necesitamos Context Profiles?</h3>
+
+            <div class="vs-container">
+                <div class="vs-section">
+                    <h4 style="color: #ef4444; font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem;">Prompting Tradicional</h4>
+                    <ul style="text-align: left; list-style: none; padding: 0;">
+                        <li style="margin-bottom: 1rem;">• Instrucciones repetitivas y largas en cada prompt</li>
+                        <li style="margin-bottom: 1rem;">• Contexto fragmentado y desconectado</li>
+                        <li style="margin-bottom: 1rem;">• Incapacidad para mantener consistencia entre sesiones</li>
+                        <li style="margin-bottom: 1rem;">• Desperdicio de tokens en repetir información básica</li>
+                    </ul>
+                </div>
+
+                <div class="vs-circle">VS</div>
+
+                <div class="vs-section">
+                    <h4 style="color: #10b981; font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem;">Con Context Profiles</h4>
+                    <ul style="text-align: left; list-style: none; padding: 0;">
+                        <li style="margin-bottom: 1rem;">• Contexto estructurado y reutilizable</li>
+                        <li style="margin-bottom: 1rem;">• Consistencia absoluta en todas las interacciones</li>
+                        <li style="margin-bottom: 1rem;">• Máxima información en mínimo espacio</li>
+                        <li style="margin-bottom: 1rem;">• Comunicación precisa con el modelo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="hero-quote">
+                "El 90% de los desarrolladores construyen aplicaciones de IA sobre suposiciones erróneas sobre cómo funcionan realmente las ventanas de contexto en los LLMs modernos."
+            </div>
+
+            <p style="font-size: 1.2rem; color: #475569; margin-top: 2rem;">
+                Los Context Profiles solucionan este problema fundamental, permitiéndonos comunicarnos con los modelos de forma estructurada, consistente y eficiente.
+            </p>
+        </div>
+
+        <div class="slide-footer">
+            <div class="author-info">
+                <span>Marcos A. Gil</span>
+                <span>Aliendra</span>
+            </div>
+            <div class="slide-number">2/15</div>
+        </div>
+    </div>
+
+    <!-- Slides 3-15 continúan exactamente igual... -->
 
     <!-- Slide 2: El Problema del Prompting Tradicional -->
     <div class="slide" id="slide-2">
