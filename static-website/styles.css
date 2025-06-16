@@ -16,6 +16,47 @@ body {
     overflow-x: hidden;
 }
 
+/* Improved background contrast styles */
+.bg-improved-contrast {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.95) 0%, 
+        rgba(248, 250, 252, 0.92) 25%, 
+        rgba(241, 245, 249, 0.90) 50%, 
+        rgba(238, 242, 248, 0.88) 75%, 
+        rgba(235, 239, 247, 0.85) 100%);
+}
+
+.bg-improved-contrast-light {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.98) 0%, 
+        rgba(251, 253, 255, 0.95) 50%, 
+        rgba(247, 250, 254, 0.92) 100%);
+}
+
+/* Enhanced text contrast */
+.text-enhanced-dark {
+    color: #1a202c !important;
+}
+
+.text-enhanced-gray {
+    color: #4a5568 !important;
+}
+
+/* Better card backgrounds */
+.card-improved-bg {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.card-improved-bg-alt {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.98) 0%, 
+        rgba(248, 250, 252, 0.95) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(226, 232, 240, 0.4);
+}
+
 /* Slide-specific styles for the module */
 .slide-container {
     font-family: 'Montserrat', sans-serif;
