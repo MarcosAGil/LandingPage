@@ -4,7 +4,7 @@
 const GOOGLE_SHEET_ID = '11kMQ3nh3P51qgp1qGMurOSzFlJh4g7X0mUCHkdgxa0g';
 
 // Google Apps Script deployment URL - REPLACE WITH YOUR ACTUAL URL
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5n3Y1_TnRppwLIBW_5qVpwNGiKn7otoKw7zBzX7kMAsAwcm-106A0wl2GLnXmWSEV/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw1GdKgNfhnQ3mpknxkcXwKoznG-vGVueqfKp4f4XUhdnEHh7qVAhvhkdOnwzW-VeLvKA/exec';
 
 // Form submission handler
 document.addEventListener('DOMContentLoaded', function() {
