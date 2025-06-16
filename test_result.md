@@ -153,6 +153,42 @@ frontend:
         agent: "main"
         comment: "Replaced 3 instances of Font Awesome Telegram icons with custom profile image in module.html: mobile CTA banner and desktop CTA banner. Added proper overflow handling and object-cover for consistent appearance."
 
+  - task: "Correct community numbers from +1,200 to +120"
+    implemented: true
+    working: true
+    file: "/app/static-website/index.html, /app/static-website/hub.html, /app/static-website/module.html"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Updated all references from '+1,200 expertos' to '+120 expertos' across all HTML files. Total 8 corrections made: index.html (4), hub.html (2), module.html (2)."
+
+  - task: "Improve background contrast for better readability"
+    implemented: true
+    working: true
+    file: "/app/static-website/styles.css, all HTML files"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added new CSS classes for improved contrast: .bg-improved-contrast, .card-improved-bg, .text-enhanced-dark, .text-enhanced-gray. Applied to forms, cards, and text elements across all pages for better visual separation between background and foreground elements."
+
+  - task: "Create Context Profiles presentation from provided HTML"
+    implemented: true
+    working: true
+    file: "/app/static-website/context-profiles-presentation.html"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Successfully created the complete Context Profiles presentation with 15 slides. Applied improved contrast styles with white/light backgrounds, updated community numbers to +120, integrated custom profile image, added navigation controls, keyboard/touch support, and proper CTA to Telegram. Updated hub.html to redirect to this presentation."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
